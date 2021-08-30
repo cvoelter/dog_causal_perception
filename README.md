@@ -14,7 +14,7 @@ Analysis of an eye-tracking experiment with dogs (N=14) on causal perception (la
 ## data folder
 Includes all data files supporting the analyses.
 
-##functions
+## functions folder
 Functions kindly provided by Roger Mundry. 
 
 
