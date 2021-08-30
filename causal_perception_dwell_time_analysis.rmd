@@ -1,0 +1,145 @@
+---
+title: Dwell time analysis of causal perception experiment
+author: Christoph Voelter
+date: 01/08/2021
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+rm(list=ls())
+library(tidyverse)
+library(summarytools)
+library(exactRankTests)
+library(ggpubr)
+
+```
+
+* Read Data
+```{r}
+xdata <- read_csv("data/causal_perception_dwell_time_data.csv")
+```
+
+
+* End IP: Plot of dwell times for the ball end positions
+```{r}
+
+test.IP.end.data <- xdata %>%
+  filter(condition!="hab", IP_LABEL=="end_IP")
+
+test.IP.end.IA.balls.data<-test.IP.end.data%>%
+  filter(IA_LABEL=="IA_end_launch_ball" | IA_LABEL=="IA_end_exp_target_ball" | IA_LABEL=="IA_end_con_target_ball")%>%
+  mutate(IA_LABEL2=as.factor(ifelse((condition=="exp" & IA_LABEL=="IA_end_exp_target_ball"), "Target ball", ifelse((condition=="con" & IA_LABEL=="IA_end_con_target_ball"), "Target ball", ifelse((IA_LABEL=="IA_end_launch_ball"), "Launching ball", "NA")))))%>%
+  mutate(condition.new=fct_recode(as.factor(condition), "No contact"="exp", "Contact"="con"))%>%
+  filter(IA_LABEL2!="NA")
+
+
+test.IP.end.IA.balls.data$condition2 <- jitter(as.numeric(as.factor(test.IP.end.IA.balls.data$condition), amount = .0001))
+y_lim_min<-0
+y_lim_max<-10000
+
+library(gghalves)
+
+
+plot_end_balls <- ggplot(data = test.IP.end.IA.balls.data, aes(x = condition.new, y= IA_DWELL_TIME)) +
+  #Add geom_() objects
+   geom_point(data = test.IP.end.IA.balls.data %>% filter(condition.new =="Contact"), aes(x = condition2), color = 'darkorange', size = 1.5, 
+              alpha = .5) +
+   geom_point(data = test.IP.end.IA.balls.data %>% filter(condition.new =="No contact"), aes(x = condition2), color = 'dodgerblue', size = 1.5, 
+              alpha = .5) +
+   geom_line(aes(x = condition2, group = subject), color = 'lightgray', alpha = .5) +
+  
+   geom_half_boxplot(
+     data = test.IP.end.IA.balls.data %>% filter(condition.new=="Contact"), aes(x=condition2, y = IA_DWELL_TIME), position = position_nudge(x = -.4), 
+     side = "r",outlier.shape = NA, center = TRUE, errorbar.draw = TRUE, width = .1, 
+     fill = 'darkorange', alpha = .5) +
+   
+   geom_half_boxplot(
+     data = test.IP.end.IA.balls.data %>% filter(condition.new=="No contact"), aes(x=condition2, y = IA_DWELL_TIME), position = position_nudge(x = .25), 
+     side = "r",outlier.shape = NA, center = TRUE, errorbar.draw = TRUE, width = .1, 
+     fill = 'dodgerblue', alpha = .5) +
+  facet_wrap(~IA_LABEL2)+
+   #Define additional settings
+   scale_x_continuous(breaks=c(1,2), labels=c("Contact", "No contact"), limits=c(0.4, 2.5)) +
+   xlab("Condition") + ylab("Dwell time (in ms)") +
+  # ggtitle('Cube: end position') +
+   theme_classic()+
+   coord_cartesian(ylim=c(y_lim_min, y_lim_max))
+  
+plot_end_balls 
+ 
+ggsave(plot_end_balls, filename = "graphics/plot_end_pos_balls.png", height=6, width=7, scale=0.55)
+
+ggsave(plot_end_balls, filename = "graphics/plot_end_pos_balls.pdf", height=6, width=7, scale=0.55)
+```
+
+
+
+* launch ball 
+```{r}
+test.IP.end.IA.launchball <- xdata %>%
+  filter(condition!="hab", IP_LABEL=="end_IP", IA_LABEL=="IA_end_launch_ball")%>%
+  arrange(subject)
+
+
+t.test(test.IP.end.IA.launchball$IA_DWELL_TIME[test.IP.end.IA.launchball$condition=="exp"], test.IP.end.IA.launchball$IA_DWELL_TIME[test.IP.end.IA.launchball$condition=="con"], paired=TRUE)
+```
+*target ball
+```{r}
+test.IP.end.IA.targetball <- xdata %>%
+  filter(condition!="hab", IP_LABEL=="end_IP", ((IA_LABEL=="IA_end_con_target_ball" & condition=="con")| (IA_LABEL=="IA_end_exp_target_ball"& condition=="exp")))%>%
+  arrange(subject)
+
+
+t.test(test.IP.end.IA.targetball$IA_DWELL_TIME[test.IP.end.IA.targetball$condition=="exp"], test.IP.end.IA.targetball$IA_DWELL_TIME[test.IP.end.IA.targetball$condition=="con"], paired=TRUE)
+```
+
+### Onscreen Dwell time (while videos is playing)
+* onscreen dwell-time: comparison between conditions
+```{r}
+on_scree_data<-xdata%>%
+  filter( IA_LABEL=="screen_IA", IP_LABEL=="video_running")%>%
+  mutate( prop_looking=TRIAL_DWELL_TIME/3700)%>%
+  select(subject, condition, phase, TRIAL_DWELL_TIME,  prop_looking)%>%
+  mutate(condition=as.factor(condition))
+
+
+on_scree_data%>%group_by(condition)%>%
+  summarise(median=median(prop_looking, na.rm = TRUE),mean=mean(prop_looking, na.rm = TRUE), se=sd(prop_looking, na.rm = TRUE)/sqrt(length(prop_looking)), min=min(prop_looking, na.rm = TRUE), max=max(prop_looking, na.rm = TRUE))
+
+```
+
+* onscreen dwell-time: comparison between first and last familiarisation trial.
+```{r}
+library(broom)
+on_scree_data%>%filter(phase=="hab1" | phase=="hab3")%>%
+  group_by(subject, phase)%>%
+  summarise(mean=mean(prop_looking, na.rm=TRUE))%>%
+  ungroup()%>%
+  summarise(ttest = list(t.test(mean ~ phase, paired=TRUE)))%>%
+  mutate(ttest = map(ttest, tidy)) %>%
+  unnest()
+```
+
+
+onscreen dwell-time: comparison between test trials
+```{r}
+on_scree_data%>%filter(phase=="test")%>%
+  group_by(subject, condition)%>%
+  summarise(mean=mean(prop_looking, na.rm=TRUE))%>%
+  ungroup()%>%
+  summarise(ttest = list(t.test(mean ~ condition, paired=TRUE)))%>%
+  mutate(ttest = map(ttest, tidy)) %>%
+  unnest()
+```
+
+Plot onscreen dwell time in test trials
+```{r}
+xx<-on_scree_data%>%filter(phase=="test")%>%
+  group_by(subject, condition)%>%
+  summarise(mean=mean(prop_looking, na.rm=TRUE))%>%
+  ungroup()
+
+ggplot(data=xx, aes(x=condition, y=mean))+
+  geom_boxplot()
+```
