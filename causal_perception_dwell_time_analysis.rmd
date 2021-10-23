@@ -79,20 +79,48 @@ ggsave(plot_end_balls, filename = "graphics/plot_end_pos_balls.pdf", height=6, w
 ```{r}
 test.IP.end.IA.launchball <- xdata %>%
   filter(condition!="hab", IP_LABEL=="end_IP", IA_LABEL=="IA_end_launch_ball")%>%
-  arrange(subject)
+  arrange(subject, condition)
 
 
 t.test(test.IP.end.IA.launchball$IA_DWELL_TIME[test.IP.end.IA.launchball$condition=="exp"], test.IP.end.IA.launchball$IA_DWELL_TIME[test.IP.end.IA.launchball$condition=="con"], paired=TRUE)
+
 ```
+Assumption of normality:
+```{r}
+test.IP.end.IA.launchball.wide<-test.IP.end.IA.launchball%>%
+  select(subject, condition, IA_DWELL_TIME)%>%
+  pivot_wider(names_from = condition, values_from=IA_DWELL_TIME)%>%
+  mutate(differences=con-exp)
+
+library(rstatix)
+shapiro_test(test.IP.end.IA.launchball.wide$differences) 
+ggqqplot(test.IP.end.IA.launchball.wide, "differences")
+
+```
+
 *target ball
 ```{r}
 test.IP.end.IA.targetball <- xdata %>%
   filter(condition!="hab", IP_LABEL=="end_IP", ((IA_LABEL=="IA_end_con_target_ball" & condition=="con")| (IA_LABEL=="IA_end_exp_target_ball"& condition=="exp")))%>%
-  arrange(subject)
+  arrange(subject, condition)
 
 
 t.test(test.IP.end.IA.targetball$IA_DWELL_TIME[test.IP.end.IA.targetball$condition=="exp"], test.IP.end.IA.targetball$IA_DWELL_TIME[test.IP.end.IA.targetball$condition=="con"], paired=TRUE)
 ```
+
+Assumption of normality:
+```{r}
+test.IP.end.IA.targetball.wide<-test.IP.end.IA.targetball%>%
+  select(subject, condition, IA_DWELL_TIME)%>%
+  pivot_wider(names_from = condition, values_from=IA_DWELL_TIME)%>%
+  mutate(differences=con-exp)
+
+library(rstatix)
+shapiro_test(test.IP.end.IA.targetball.wide$differences) 
+ggqqplot(test.IP.end.IA.targetball.wide, "differences")
+
+```
+
 
 ### Onscreen Dwell time (while videos is playing)
 * onscreen dwell-time: comparison between conditions
@@ -142,4 +170,17 @@ xx<-on_scree_data%>%filter(phase=="test")%>%
 
 ggplot(data=xx, aes(x=condition, y=mean))+
   geom_boxplot()
+```
+
+Assumption of normality:
+```{r}
+on_screen_test<-on_scree_data%>%filter(phase=="test")%>%
+  select(subject, condition, prop_looking)%>%
+  pivot_wider(names_from = condition, values_from=prop_looking)%>%
+  mutate(differences=con-exp)
+
+library(rstatix)
+shapiro_test(on_screen_test$differences) 
+ggqqplot(on_screen_test, "differences")
+
 ```

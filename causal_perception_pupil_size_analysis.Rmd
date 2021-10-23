@@ -56,7 +56,8 @@ sample.data <- read_csv("data/causal_perception_sample_report_data.csv")
 #### Artefact check
 *Plot raw data
 ```{r}
-ggplot(data = sample.data %>% filter(condition != "hab"), aes(x = time.frame, y = RIGHT_PUPIL_SIZE)) +
+raw_plot_pupil<-ggplot(data = sample.data %>% filter(condition != "hab")%>%
+mutate(condition=fct_recode(condition, "No contact"="exp", "Contact"="con")), aes(x = time.frame, y = RIGHT_PUPIL_SIZE)) +
   ylab("Pupil size") +
   xlab("Time (in ms)") +
   geom_point(aes(color = condition), alpha = 0.3, size = 0.5) +
@@ -69,7 +70,9 @@ ggplot(data = sample.data %>% filter(condition != "hab"), aes(x = time.frame, y 
         panel.grid.minor.x = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        legend.title = element_blank(), legend.position = c(0.85, 0.8), legend.text=element_text(size=12))
+        legend.title = element_blank(), legend.position = c(0.65, 0.1), legend.text=element_text(size=12))
+
+ggsave(raw_plot_pupil, filename = "graphics/raw_plot_pupil.png", width=10, height=8, scale=0.8)
 ```
 * Plot with blink artefacts removed
 ```{r}
@@ -132,19 +135,26 @@ exp.data.pupil.processed <- sample.data %>%
   select(-bin_high)%>%
   mutate(bin_low=as.numeric(str_replace_all(bin_low, "\\[|\\]", "")))
   
-#down sampling to 50hz using median values:
+#down sampling to 10hz using median values:
 exp.data.pupil.processed.downsampled <- exp.data.pupil.processed %>%  
   group_by(subject, condition, bin_low)%>%
-  summarise(pupil.base.corrected.binned=median(pupil.base.corrected), Xgaze=median(RIGHT_GAZE_X), Ygaze=median(RIGHT_GAZE_Y)) 
+  summarise(pupil.base.corrected.binned=median(pupil.base.corrected), Xgaze=median(RIGHT_GAZE_X), Ygaze=median(RIGHT_GAZE_Y))%>%
+  ungroup()
 ```
 
 
 * Plot interpolated data: individual level
 ```{r}
-ggplot(data = exp.data.pupil.processed.downsampled%>% filter(condition != "hab"), aes(x = bin_low, y =pupil.base.corrected.binned )) +
-  ylab("Pupil size") +
+
+exp.data.pupil.processed.downsampled2<-exp.data.pupil.processed.downsampled%>%
+  mutate(condition=fct_recode(condition, "No contact"="exp", "Contact"="con"))
+
+plot.contact.pupil.individual<-ggplot(data = exp.data.pupil.processed.downsampled2%>% filter(condition != "hab"), aes(x = bin_low, y =pupil.base.corrected.binned )) +
+  ylab("Pupil size ") +
   xlab("Time (in ms)") +
+    geom_vline(aes(xintercept=baseline.end), lty=2, alpha=0.3)+
   geom_point(aes(color = condition), alpha = 0.8, size = 0.5) +
+  geom_line(aes(color = condition), alpha = 0.8) +
   facet_wrap(~subject)+
   xlim(0, 8000) +
     theme_bw()+
@@ -154,17 +164,19 @@ ggplot(data = exp.data.pupil.processed.downsampled%>% filter(condition != "hab")
         panel.grid.minor.x = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.minor.y = element_blank(),
-        legend.title = element_blank(), legend.position = "none",
+        legend.title = element_blank(), legend.position = c(0.65, 0.1),
         legend.text=element_text(size=12))
+
+plot.contact.pupil.individual
+ggsave(plot.contact.pupil.individual, filename = "graphics/plot.contact.pupil_baseline_corrected_individual.png", height = 7, width = 8, scale = 0.8)
 ```
 
 * Plot group level data
 ```{r}
 
-pupil.group.level <- exp.data.pupil.processed.downsampled %>%
+pupil.group.level <- exp.data.pupil.processed.downsampled2 %>%
   group_by(bin_low, condition) %>%
-  summarise(mean.pupil.corrected.binned = mean(pupil.base.corrected.binned, na.rm = TRUE), sd.pupil.corrected.binned= sd(pupil.base.corrected.binned, na.rm = TRUE), se.pupil.corrected.binned = sd(pupil.base.corrected.binned, na.rm = TRUE) / sqrt(length(pupil.base.corrected.binned)))%>%
-  mutate(condition=fct_recode(condition, "No contact"="exp", "Contact"="con"))
+  summarise(mean.pupil.corrected.binned = mean(pupil.base.corrected.binned, na.rm = TRUE), sd.pupil.corrected.binned= sd(pupil.base.corrected.binned, na.rm = TRUE), se.pupil.corrected.binned = sd(pupil.base.corrected.binned, na.rm = TRUE) / sqrt(length(pupil.base.corrected.binned)))
 
 plot.contact.pupil <- ggplot(data = pupil.group.level %>% filter(condition != "hab"), aes(x = bin_low, y = mean.pupil.corrected.binned)) +
   geom_vline(aes(xintercept=baseline.end), lty=2, alpha=0.3)+
@@ -240,12 +252,27 @@ m2.null <- bam(pupil_base ~ s(time, k=20)+
 summary(m2)
 
 gam.check(m2)
+
 acf(resid(m2), bty='n', main="ACF residuals model1")
 acf(resid(m2), plot=FALSE)
 
 compareML(m2.null, m2)
 AIC(m2, m2.null)
+```
 
+
+```{r}
+#save gam_check
+library(visibly)
+png("graphics/GAMM01_gam_check.png", units="cm", res=600, width=24, height = 18)
+gam_check_plot<-plot_gam_check(m2, scatter=TRUE)
+print(gam_check_plot)
+dev.off()
+
+png("graphics/GAMM01_acf_plot.png", units="cm", res=600, width=12, height = 12)
+acf_plot<-acf(resid(m2), bty='n', main="")
+print(acf_plot)
+dev.off()
 ```
 
 
@@ -444,6 +471,7 @@ gaze_contact_plot<-ggplot(data = gaze_plot_data, aes(x = time.frame, y = mean.x)
    ylab("Horizontal coordinates (in px)") +
   xlab("Time (in ms)") +
   xlim(0, 13517)+
+  ylim(0, 1024)+
     theme_bw()+
   theme(panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
@@ -577,7 +605,9 @@ r2.exp <- data.r2.target %>%
   unnest(results) %>%
   select(subject, phase2, r.squared) %>%
   rename(r.sq.exp = r.squared) %>%
-  mutate(across(where(is.numeric), round, 3))
+  mutate(across(where(is.numeric), round, 3))%>%
+  ungroup()%>%
+  select(-phase2)
 
 
 r2.con <- data.r2.target %>%
@@ -591,18 +621,39 @@ r2.con <- data.r2.target %>%
   unnest(results) %>%
   select(subject, r.squared) %>%
   rename(r.sq.con = r.squared) %>%
-  mutate(across(where(is.numeric), round, 3))
-
+  mutate(across(where(is.numeric), round, 3))%>%
+  ungroup()%>%
+  select(-phase2)
 
 r2.exp %>%
-  group_by(phase2) %>%
   summarise(mean = mean(r.sq.exp),median = median(r.sq.exp), min = min(r.sq.exp), max = max(r.sq.exp), sd = sd(r.sq.exp))
 
 r2.con %>%
-  group_by(phase2) %>%
   summarise(mean = mean(r.sq.con), median = median(r.sq.con), min = min(r.sq.con), max = max(r.sq.con), sd = sd(r.sq.con))
 
 ```
+Comparing r2 values for target ball across the two condition
+```{r}
+
+r2_target<-r2.exp%>%full_join(r2.con )
+t.test(r2_target$r.sq.exp, r2_target$r.sq.con, paired=TRUE)
+
+```
+Determine r² values for the entire sample:
+```{r}
+r2.exp.target.group=lmer(mean.x~x_target_exp+(1|subject), data =  data.r2.target%>%filter(phase2=="exp"),REML=F)
+summary(r2.exp.target.group)
+
+library(MuMIn)
+r.squaredGLMM(object=r2.exp.target.group)
+
+
+r2.con.target.group=lmer(mean.x~x_target_con+(1|subject), data =  data.r2.target%>%filter(phase2=="con"),REML=F)
+summary(r2.con.target.group)
+
+r.squaredGLMM(object=r2.con.target.group)
+```
+
 
 launch ball
 ```{r}
@@ -634,6 +685,28 @@ r2.exp %>%
   group_by(phase2) %>%
   summarise(mean = mean(r.sq.exp), median = median(r.sq.exp),min = min(r.sq.exp), max = max(r.sq.exp), sd = sd(r.sq.exp))
 
+```
+Comparing r2 values for target ball across the two condition
+```{r}
+r2.launch<-r2.exp%>%
+  pivot_wider(names_from = phase2, values_from=r.sq.exp)
+
+t.test(r2.launch$exp, r2.launch$con, paired=TRUE)
+
+```
+Determine r² values for the entire sample:
+```{r}
+r2.exp.launch.group=lmer(mean.x~x_launch+(1|subject), data =  data.r2.launch%>%filter(phase2=="exp"),REML=F)
+summary(r2.exp.launch.group)
+
+library(MuMIn)
+r.squaredGLMM(object=r2.exp.launch.group)
+
+
+r2.con.launch.group=lmer(mean.x~x_launch+(1|subject), data =  data.r2.launch%>%filter(phase2=="con"),REML=F)
+summary(r2.con.launch.group)
+
+r.squaredGLMM(object=r2.con.launch.group)
 ```
 
 launch ball: familiarisation
@@ -668,7 +741,14 @@ r2.hab %>%
 
 ```
 
+Determine r² values for the entire sample:
+```{r}
+r2.hab.group=lmer(mean.x~x_launch_hab+(phase2|subject), data =  data.ind.hab%>%filter(condition=="hab"),REML=F)
+summary(r2.hab.group)
 
+library(MuMIn)
+r.squaredGLMM(object=r2.hab.group)
+```
 ### LMM
 * read data 
 ```{r}
