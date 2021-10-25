@@ -1,29 +1,29 @@
-"","subject","condition","pupil.size.corrected","mean.deviation","Dog_ID","Date1","Date2","xx","EDF2","Cal_tar1","Cal_tar2","Name","Breed","sex","neutered","birth_date","age","Order_condition"
-"1","dog_1","con",519.951219512195,0.14509144469152,12,"27/10/2020","06/11/2020","1","Ace_2","calibug32","trigger_q_64","Ace3","Border Collie","m","yes","15.03.2019",19,"test_first"
-"2","dog_1","exp",1425.38888511448,NA,12,"27/10/2020","06/11/2020","1","Ace_2","calibug32","trigger_q_64","Ace3","Border Collie","m","yes","15.03.2019",19,"test_first"
-"3","dog_10","con",375.926829268293,0.118485866737203,6,"29/09/2020","06/10/2020","1","Mavie_2","w_calibug32","w_calibug32","Mavie","Border Collie","f","no","09.07.2019",14,"test_first"
-"4","dog_10","exp",132.317073170732,0.139965910512713,6,"29/09/2020","06/10/2020","1","Mavie_2","w_calibug32","w_calibug32","Mavie","Border Collie","f","no","09.07.2019",14,"test_first"
-"5","dog_11","con",1507.34146341463,0.157612238436306,13,"16/11/2020","10/12/2020","1","Maylo_2","w_calibug64","w_calibug64px","Maylo","Mix","m","yes","13.11.2015",60,"test_first"
-"6","dog_11","exp",519.948113515988,NA,13,"16/11/2020","10/12/2020","1","Maylo_2","w_calibug64","w_calibug64px","Maylo","Mix","m","yes","13.11.2015",60,"test_first"
-"7","dog_12","con",317.073170731707,0.138770524414429,4,"24/08/2020","01/10/2020","1","Melody_2","cal_bulls_eye_white_bg_long","w_calibug32px","Melody","Labrador Retriever","f","yes","14.08.2018",24,"test_first"
-"8","dog_12","exp",604.146341463415,0.174711620415585,4,"24/08/2020","01/10/2020","1","Melody_2","cal_bulls_eye_white_bg_long","w_calibug32px","Melody","Labrador Retriever","f","yes","14.08.2018",24,"test_first"
-"9","dog_13","con",1117.63414634146,0.153687613696206,1,"05/08/2020","13/08/2020","1","Timo_2","cat_eye","calibug_32","Timo2","Mix","m","no","01.02.2019",18,"control_first"
-"10","dog_13","exp",2336.78048780488,0.163782544573388,1,"05/08/2020","13/08/2020","1","Timo_2","cat_eye","calibug_32","Timo2","Mix","m","no","01.02.2019",18,"control_first"
-"11","dog_14","con",65.7439024390244,0.125818372715658,5,"25/08/2020","02/10/2020","1","Vega_2","w_cuckoo64","w_calibug64px","Vega","Border Collie","f","no","09.07.2019",13,"control_first"
-"12","dog_14","exp",-571.628766140603,NA,5,"25/08/2020","02/10/2020","1","Vega_2","w_cuckoo64","w_calibug64px","Vega","Border Collie","f","no","09.07.2019",13,"control_first"
-"13","dog_2","con",NA,NA,9,"14/10/2020","22/10/2020","1","Asta_2","w_cuckoo64","w_calibug64px","Asta2","Border Collie","f","no","05/10/2018",24,"control_first"
-"14","dog_2","exp",-46.8294158143194,NA,9,"14/10/2020","22/10/2020","1","Asta_2","w_cuckoo64","w_calibug64px","Asta2","Border Collie","f","no","05/10/2018",24,"control_first"
-"15","dog_3","con",331.59756097561,0.210261276299514,7,"06/10/2020","21/10/2020","1","Beny_2","calibug32","calibug_32","Beny","Mix","m","yes","28.04.2019",17,"test_first"
-"16","dog_3","exp",483.231707317073,0.184401329437265,7,"06/10/2020","21/10/2020","1","Beny_2","calibug32","calibug_32","Beny","Mix","m","yes","28.04.2019",17,"test_first"
-"17","dog_4","con",1035.81707317073,0.0704004539899731,14,"10/12/2020","16/12/2020","1","Cheynna2","w_cuckoo32","w_cuckoo32","Cheynna","Australian Shepherd","f","no","28/04/2014",79,"control_first"
-"18","dog_4","exp",2048.74390243902,0.0793573193258554,14,"10/12/2020","16/12/2020","1","Cheynna2","w_cuckoo32","w_cuckoo32","Cheynna","Australian Shepherd","f","no","28/04/2014",79,"control_first"
-"19","dog_5","con",189.012195121951,0.19958960818358,8,"08/10/2020","15/10/2020","1","Dawin_2","trigger_q_64","trigger_q_32","Dawin","Border Collie","m","no","01.02.2016",56,"control_first"
-"20","dog_5","exp",900.817073170732,0.228372909725891,8,"08/10/2020","15/10/2020","1","Dawin_2","trigger_q_64","trigger_q_32","Dawin","Border Collie","m","no","01.02.2016",56,"control_first"
-"21","dog_6","con",172.40243902439,0.153878313858659,11,"23/10/2020","30/10/2020","1","George_2","w_starjumps64","cal_star_white_bg_long","George4","Collie","m","no","12.04.2019",18,"control_first"
-"22","dog_6","exp",1217.81707317073,0.122863374821697,11,"23/10/2020","30/10/2020","1","George_2","w_starjumps64","cal_star_white_bg_long","George4","Collie","m","no","12.04.2019",18,"control_first"
-"23","dog_7","con",1114.4512195122,0.0708935998891371,10,"21/10/2020","29/10/2020","1","Georgia3","cal_star_white_bg_long","w_cuckoo32","Georgia","Labrador Retriever","f","yes","29.12.2017",33,"test_first"
-"24","dog_7","exp",1284.17073170732,0.141194048541046,10,"21/10/2020","29/10/2020","1","Georgia3","cal_star_white_bg_long","w_cuckoo32","Georgia","Labrador Retriever","f","yes","29.12.2017",33,"test_first"
-"25","dog_8","con",-383.865853658537,0.183413019446321,2,"18/08/2020","24/08/2020","1","Hetti_2","cuckoo_32","trigger_q_32","Hetti","Mix","f","no","10.01.2019",19,"control_first"
-"26","dog_8","exp",1512.5243902439,0.154190941759748,2,"18/08/2020","24/08/2020","1","Hetti_2","cuckoo_32","trigger_q_32","Hetti","Mix","f","no","10.01.2019",19,"control_first"
-"27","dog_9","con",232.944276304077,NA,3,"24/08/2020","25/09/2020","1","Lilly_2","trigger_q_32","star32","Lilly9","Mix","f","yes","07.09.2017",35,"control_first"
-"28","dog_9","exp",1772.5,0.197939637054659,3,"24/08/2020","25/09/2020","1","Lilly_2","trigger_q_32","star32","Lilly9","Mix","f","yes","07.09.2017",35,"control_first"
+subject,condition,pupil.size.corrected,mean.deviation,Dog_ID,Date1,Date2,Cal_tar1,Cal_tar2,Breed,sex,neutered,age,Order_condition,z.dev,z.age
+dog_13,con,1117.634146,0.153687614,1,05/08/2020,13/08/2020,cat_eye,calibug_32,Mix,m,no,18,control_first,0.038586993,-0.636805405
+dog_13,exp,2336.780488,0.163782545,1,05/08/2020,13/08/2020,cat_eye,calibug_32,Mix,m,no,18,control_first,0.273274344,-0.636805405
+dog_8,con,-383.8658537,0.183413019,2,18/08/2020,24/08/2020,cuckoo_32,trigger_q_32,Mix,f,no,19,control_first,0.729644398,-0.586436616
+dog_8,exp,1512.52439,0.154190942,2,18/08/2020,24/08/2020,cuckoo_32,trigger_q_32,Mix,f,no,19,control_first,0.050288384,-0.586436616
+dog_9,con,232.9442763,0.173159145,3,24/08/2020,25/09/2020,trigger_q_32,star32,Mix,f,yes,35,control_first,0.49126192,0.21946401
+dog_9,exp,1772.5,0.197939637,3,24/08/2020,25/09/2020,trigger_q_32,star32,Mix,f,yes,35,control_first,1.067359777,0.21946401
+dog_12,con,317.0731707,0.138770524,4,24/08/2020,01/10/2020,cal_bulls_eye_white_bg_long,w_calibug32px,Labrador Retriever,f,yes,24,test_first,-0.308206086,-0.33459267
+dog_12,exp,604.1463415,0.17471162,4,24/08/2020,01/10/2020,cal_bulls_eye_white_bg_long,w_calibug32px,Labrador Retriever,f,yes,24,test_first,0.52735393,-0.33459267
+dog_14,con,65.74390244,0.125818373,5,25/08/2020,02/10/2020,w_cuckoo64,w_calibug64px,Border Collie,f,no,13,control_first,-0.60931822,-0.88864935
+dog_14,exp,-571.6287661,0.210977983,5,25/08/2020,02/10/2020,w_cuckoo64,w_calibug64px,Border Collie,f,no,13,control_first,1.370475766,-0.88864935
+dog_10,con,375.9268293,0.118485867,6,29/09/2020,06/10/2020,w_calibug32,w_calibug32,Border Collie,f,no,14,test_first,-0.779784608,-0.838280561
+dog_10,exp,132.3170732,0.139965911,6,29/09/2020,06/10/2020,w_calibug32,w_calibug32,Border Collie,f,no,14,test_first,-0.280415703,-0.838280561
+dog_3,con,331.597561,0.210261276,7,06/10/2020,21/10/2020,calibug32,calibug_32,Mix,m,yes,17,test_first,1.353813732,-0.687174194
+dog_3,exp,483.2317073,0.184401329,7,06/10/2020,21/10/2020,calibug32,calibug_32,Mix,m,yes,17,test_first,0.752620668,-0.687174194
+dog_5,con,189.0121951,0.199589608,8,08/10/2020,15/10/2020,trigger_q_64,trigger_q_32,Border Collie,m,no,56,control_first,1.105718371,1.27720858
+dog_5,exp,900.8170732,0.22837291,8,08/10/2020,15/10/2020,trigger_q_64,trigger_q_32,Border Collie,m,no,56,control_first,1.7748737,1.27720858
+dog_2,con,49.69619584,0.106631589,9,14/10/2020,22/10/2020,w_cuckoo64,w_calibug64px,Border Collie,f,no,24,control_first,-1.055373317,-0.33459267
+dog_2,exp,-46.82941581,0.093921337,9,14/10/2020,22/10/2020,w_cuckoo64,w_calibug64px,Border Collie,f,no,24,control_first,-1.350861766,-0.33459267
+dog_7,con,1114.45122,0.0708936,10,21/10/2020,29/10/2020,cal_star_white_bg_long,w_cuckoo32,Labrador Retriever,f,yes,33,test_first,-1.886211504,0.118726431
+dog_7,exp,1284.170732,0.141194049,10,21/10/2020,29/10/2020,cal_star_white_bg_long,w_cuckoo32,Labrador Retriever,f,yes,33,test_first,-0.251863902,0.118726431
+dog_6,con,172.402439,0.153878314,11,23/10/2020,30/10/2020,w_starjumps64,cal_star_white_bg_long,Collie,m,no,18,control_first,0.043020398,-0.636805405
+dog_6,exp,1217.817073,0.122863375,11,23/10/2020,30/10/2020,w_starjumps64,cal_star_white_bg_long,Collie,m,no,18,control_first,-0.678016127,-0.636805405
+dog_1,con,519.9512195,0.145091445,12,27/10/2020,06/11/2020,calibug32,trigger_q_64,Border Collie,m,yes,19,test_first,-0.161257083,-0.586436616
+dog_1,exp,1425.388885,0.154406056,12,27/10/2020,06/11/2020,calibug32,trigger_q_64,Border Collie,m,yes,19,test_first,0.055289359,-0.586436616
+dog_11,con,1507.341463,0.157612238,13,16/11/2020,10/12/2020,w_calibug64,w_calibug64px,Mix,m,yes,60,test_first,0.129826824,1.478683737
+dog_11,exp,519.9481135,0.203000828,13,16/11/2020,10/12/2020,w_calibug64,w_calibug64px,Mix,m,yes,60,test_first,1.185022548,1.478683737
+dog_4,con,1035.817073,0.070400454,14,10/12/2020,16/12/2020,w_cuckoo32,w_cuckoo32,Australian Shepherd,f,no,79,control_first,-1.897676179,2.435690729
+dog_4,exp,2048.743902,0.079357319,14,10/12/2020,16/12/2020,w_cuckoo32,w_cuckoo32,Australian Shepherd,f,no,79,control_first,-1.689446621,2.435690729
